@@ -1,6 +1,10 @@
 {
 	"name": "jnyamlpath",
 	"publisher": "jonasschwabe",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jnugh/vscode-yamlpath"
+	},
 	"displayName": "YAMLPath",
 	"description": "Copy a yaml property path to easily create yaml overrides",
 	"version": "1.0.0",
