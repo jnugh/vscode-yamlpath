@@ -1,8 +1,9 @@
 {
 	"name": "jnyamlpath",
+	"publisher": "jonasschwabe",
 	"displayName": "YAMLPath",
 	"description": "Copy a yaml property path to easily create yaml overrides",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"engines": {
 		"vscode": "^1.36.0"
 	},
