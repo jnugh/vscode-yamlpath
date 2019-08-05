@@ -5,6 +5,7 @@ jobs:
       - image: circleci/node:12.6
 
     steps:
+      - run: sudo apt-get update; sudo apt-get install libgtk-3-0 libxtst6 libxss1 libgconf-2-4 libnss3 libasound2 xvfb
       - checkout
 
       # Download and cache dependencies
@@ -22,4 +23,4 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       # run tests!
-      - run: npm test
+      - run: xvfb-run npm test
