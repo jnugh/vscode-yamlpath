@@ -5,6 +5,8 @@ interface YamlNode {
 	[key: string]: string | YamlNode;
 }
 
+const SENTINEL = '__yamlpath_sentinel__';
+
 export function activate(context: vscode.ExtensionContext) {
 
 	function dfs(obj: YamlNode, path: string[], searchStr: string): string[] | undefined {
@@ -32,11 +34,11 @@ export function activate(context: vscode.ExtensionContext) {
 			const yamlLines = yamlString.split(/\r?\n/);
 			const lastLine = yamlLines[yamlLines.length - 1];
 			const propertyData = lastLine.split(':', 1);
-			propertyData[1] = "'jdkfsdajksadfu90ixosfuijkvxnyv9f7rgzvxcuhjkcausifckjdgfdjsgd'";
+			propertyData[1] = `'${SENTINEL}'`;
 			yamlLines[yamlLines.length - 1] = propertyData.join(': ');
 			const yamlData = yaml.safeLoad(yamlLines.join("\n"));
-			
-			const objPath = dfs(yamlData, [], 'jdkfsdajksadfu90ixosfuijkvxnyv9f7rgzvxcuhjkcausifckjdgfdjsgd');
+
+			const objPath = dfs(yamlData, [], SENTINEL);
 			let resultObject = {};
 			if(objPath !== undefined) {
 				for(const key of objPath.reverse()) {
@@ -44,9 +46,12 @@ export function activate(context: vscode.ExtensionContext) {
 						[key]: resultObject
 					};
 				}
+				const result = yaml.safeDump(resultObject);
+				vscode.env.clipboard.writeText(result);
+				vscode.window.showInformationMessage(`YAML path copied to clipboard`);
+			} else {
+				vscode.window.showWarningMessage(`Could not determine YAML path for the selected line`);
 			}
-			
-			vscode.env.clipboard.writeText(yaml.safeDump(resultObject));
 		}
 	});
 
